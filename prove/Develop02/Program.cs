@@ -24,19 +24,37 @@ public class Program
             switch (userChoice)
             {
                 case "1":
-                    PromptGenerator promptGenerator = new PromptGenerator();
-                    string prompt = promptGenerator.GetRandomPrompt();
-                    Console.WriteLine(prompt);
-                    string response = Console.ReadLine();
+                    Console.WriteLine("Would you like a prompt? ");
+                    string promptChoice = Console.ReadLine();
+                    if (promptChoice == "yes")
+                    {
+                        PromptGenerator promptGenerator = new PromptGenerator();
+                        string prompt = promptGenerator.GetRandomPrompt();
+                        Console.WriteLine(prompt);
+                        string response = Console.ReadLine();
 
-                    // ENTRY
-                    Entry entry = new Entry();
-                    entry._prompt = prompt;
-                    entry._response = response;
-                    entry._date = DateTime.Now;
+                        // ENTRY
+                        Entry entry = new Entry();
+                        entry._prompt = prompt;
+                        entry._response = response;
+                        entry._date = DateTime.Now;
 
-                    //JOURNAL
-                    journal._entries.Add(entry);
+                        //JOURNAL
+                        journal._entries.Add(entry);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Write: ");
+                        string response = Console.ReadLine();
+
+                        // ENTRY
+                        Entry entry = new Entry();
+                        entry._response = response;
+                        entry._date = DateTime.Now;
+
+                        //JOURNAL
+                        journal._entries.Add(entry);
+                    }
                     break;
                 case "2":
                     foreach (Entry singleEntry in journal._entries)
