@@ -1,12 +1,15 @@
 using System;
+using System.IO.Enumeration;
 
-class Program
+public class Program
 {
     static void Main(string[] args)
     {
+        Journal journal = new Journal();
+
         string userChoice = "1";
 
-        while(userChoice != "5")
+        while (userChoice != "5")
         {
             Console.WriteLine("Welcome to the Journal Program!");
             Console.WriteLine("Please select one of the following choices:");
@@ -21,16 +24,40 @@ class Program
             switch (userChoice)
             {
                 case "1":
-                    Console.WriteLine("Write");
+                    PromptGenerator promptGenerator = new PromptGenerator();
+                    string prompt = promptGenerator.GetRandomPrompt();
+                    Console.WriteLine(prompt);
+                    string response = Console.ReadLine();
+
+                    // ENTRY
+                    Entry entry = new Entry();
+                    entry._prompt = prompt;
+                    entry._response = response;
+                    entry._date = DateTime.Now;
+
+                    //JOURNAL
+                    journal._entries.Add(entry);
                     break;
                 case "2":
-                    Console.WriteLine("Display");
+                    foreach (Entry singleEntry in journal._entries)
+                    {
+                        Console.WriteLine("Date: " + singleEntry._date + " - " + singleEntry._prompt);
+                        Console.WriteLine(singleEntry._response);
+                        Console.WriteLine("");
+                    }
                     break;
                 case "3":
-                    Console.WriteLine("Load");
+                    Console.WriteLine("What is the file name? ");
+                    string userInput = Console.ReadLine();
+                    string userFile = userInput + ".txt";
+                    journal.LoadJournalFile(userFile);
                     break;
                 case "4":
-                    Console.WriteLine("Save");
+                    Console.WriteLine("What is the file name? ");
+                    string filename = Console.ReadLine();
+                    string filepath = filename + ".txt";
+                    Journal myJournal = new Journal();
+                    journal.SaveJournalToFile(journal._entries, filepath);
                     break;
                 case "5":
                     Console.WriteLine("Quit");
